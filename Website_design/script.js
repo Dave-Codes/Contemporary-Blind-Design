@@ -11,7 +11,7 @@
 
     window.addEventListener('scroll', function() {
         const myElement = document.querySelector('.arrow');
-        if (window.scrollY > 100) { // Change 100 to your desired scroll position
+        if (window.scrollY > 75) { // Change 100 to your desired scroll position
             myElement.classList.add('scrolled');
         } else {
             myElement.classList.remove('scrolled');
@@ -75,8 +75,9 @@ const navMenu = document.querySelector('.topnav'); // Assuming you have a naviga
 
 hamburgerMenu.addEventListener('click', () => {
   hamburgerMenu.classList.toggle('active');
+  navMenu.classList.toggle('active');
   if (navMenu.style.display === ('none')){
-  navMenu.style.display = 'block';}
+  navMenu.style.display = 'flex';}
   else {
     navMenu.style.display = 'none';
   }
