@@ -126,16 +126,56 @@ for (let i = 0; i < gifs.length; i++) {
 }
 
 
-    /*document.addEventListener('click', function(event) {
-        // Check if the clicked element is NOT the menu itself and NOT a child of the menu
-        if (!navMenu.contains(event.target) && event.target !== navMenu) {
-            navMenu.style.display = 'none'; // Or add a 'hidden' class
-        }
+  function setIncrementalZIndex(parentElementId) {
+  const parentElement = document.getElementById(parentElementId);
+  if (!parentElement) {
+    console.error(`Parent element with ID "${parentElementId}" not found.`);
+    return;
+  }
+
+  const childElements = parentElement.children;
+  for (let i = 0; i < childElements.length; i++) {
+    const child = childElements[i];
+    // Ensure the element has a position property for z-index to work
+    // If not already set, you might want to add it, e.g., child.style.position = 'relative';
+    child.style.zIndex = i + 1; // Assign z-index starting from 1
+  }
+}
+
+setIncrementalZIndex('product-scroll');
+
+
+const scrollers = document.querySelectorAll(".scroller");
+
+// If a user hasn't opted in for recuded motion, then we add the animation
+if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  addAnimation();
+}
+
+function addAnimation() {
+  scrollers.forEach((scroller) => {
+    // add data-animated="true" to every `.scroller` on the page
+    scroller.setAttribute("data-animated", true);
+
+    // Make an array from the elements within `.scroller-inner`
+    const scrollerInner = scroller.querySelector(".scroller__inner");
+    const scrollerContent = Array.from(scrollerInner.children);
+
+    // For each item in the array, clone it
+    // add aria-hidden to it
+    // add it into the `.scroller-inner`
+    scrollerContent.forEach((item) => {
+      const duplicatedItem = item.cloneNode(true);
+      duplicatedItem.setAttribute("aria-hidden", true);
+      scrollerInner.appendChild(duplicatedItem);
     });
+  });
+}
 
-    const menuToggleButton = document.getElementById('.hamburger'); // Replace with your button's ID
+const scrollContainer = document.querySelector('.scroller');
 
-    menuToggleButton.addEventListener('click', function(event) {
-        event.stopPropagation(); // Prevent this click from bubbling up to the document
-        navMenu.style.display = navMenu.style.display === 'none' ? 'block' : 'none'; // Toggle visibility
-    });*/
+scrollContainer.addEventListener('wheel', (event) => {
+  event.preventDefault(); // Prevent default vertical scrolling
+
+  scrollContainer.scrollLeft += event.deltaY; // Adjust scroll position based on wheel movement
+});
